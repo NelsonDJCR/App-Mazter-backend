@@ -4,82 +4,73 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class ProductController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    public function getProducts()
     {
-        //
+        return Product::getProducts();
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function saveProduct()
     {
-        //
+        $rules = [
+            'name' => 'required|max:255',
+            'bar_code' => '|nullable|integer',
+            'price' => 'required|integer|max:999999',
+            'discount' => 'required|max:99|integer',
+            'stock' => 'nullable|max:1000|integer',
+        ];
+        $validator = Validator::make(request()->all(), $rules);
+        if ($validator->fails()) {
+            return response()->json([
+                'code' => 406,
+                'msg' => $validator->errors()->first(),
+            ]);
+        }
+        try {
+            Product::create(request()->all());
+            $this->returnMsg('Register saved');
+        } catch (\Throwable $th) {
+            return $this->msgServerError($th);
+        }
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function showProduct()
     {
-        //
+        try {
+            $data = Product::find(request()->id);
+            if (!empty($data)) {
+                return response()->json($data);
+            }else{
+                return $this->returnMsg('No hay registros asociados');
+            }
+        } catch (\Throwable $th) {
+            return $this->msgServerError($th);
+        }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Product  $product
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Product $product)
+    public function deleteProduct()
     {
-        //
+        try {
+            Product::find(request()->id)->delete();
+            return response()->json(['code'=>200]);
+        } catch (\Throwable $th) {
+            return $this->msgServerError($th);
+        }
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Product  $product
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Product $product)
+    public function msgServerError($th)
     {
-        //
+        return response()->json([
+            'code' => 406,
+            'msg' => 'Server error',
+            'error' => $th
+        ]);
     }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Product  $product
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Product $product)
+    public function returnMsg($response = null)
     {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Product  $product
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Product $product)
-    {
-        //
+        return response()->json(['msg'=>$response]);
     }
 }
