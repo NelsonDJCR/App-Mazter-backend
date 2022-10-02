@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Mail;
 class SendBackup extends Command
 {
 
-    protected $signature = 'generate:backup {id}';
+    protected $signature = 'generate:backup {user_id}';
 
     protected $description = 'Send a copy of the database of the products and user information';
 
@@ -19,13 +19,13 @@ class SendBackup extends Command
     {
         echo "_________________________\n";
         echo "Realizando Backup...\n";
-        $id = $this->argument('id');
+        $user_id = $this->argument('user_id');
 
-        $products = Product::where('user_id', $id)->get();
+        $products = Product::where('user_id', $user_id)->get();
 
         $sql = "";
 
-        $user = User::find($id);
+        $user = User::find($user_id);
 
         #Get SQL for update data user
         $sql .= "UPDATE users SET " .
@@ -36,7 +36,7 @@ class SendBackup extends Command
             "',phone_secondary = " . ($user->phone_secondary ? $user->phone_secondary : "null") .
             ",color = '" . $user->color .
             "',state_suscription = '" . $user->state_suscription .
-            "',business_type_id = '" . $user->business_type_id . "' WHERE id = $id; \n\n\n";
+            "',business_type_id = '" . $user->business_type_id . "' WHERE id = $user_id; \n\n\n";
 
 
         # Get SQL for each product register 
