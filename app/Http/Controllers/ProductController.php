@@ -8,14 +8,6 @@ use Illuminate\Support\Facades\Validator;
 
 class ProductController extends Controller
 {
-    public function test()
-    {
-        return "1";
-    }
-    // public function __construct()
-    // {
-    //     $this->middleware('auth');
-    // }
     public function getProducts()
     {
         return Product::getProducts();
