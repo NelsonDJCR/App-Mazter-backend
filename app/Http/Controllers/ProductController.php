@@ -24,10 +24,7 @@ class ProductController extends Controller
         ];
         $validator = Validator::make(request()->all(), $rules);
         if ($validator->fails()) {
-            return response()->json([
-                'code' => 406,
-                'msg' => $validator->errors()->first(),
-            ]);
+            return response()->json($validator->errors()->first(),406);
         }
         try {
             Product::create(request()->all());
@@ -42,12 +39,12 @@ class ProductController extends Controller
         try {
             $data = Product::find(request()->id);
             if (!empty($data)) {
-                return response()->json($data);
+                return response()->json($data,200);
             }else{
                 return $this->returnMsg('No hay registros asociados');
             }
         } catch (\Throwable $th) {
-            return $this->msgServerError($th);
+            return $this->msgServerError($th,406);
         }
     }
 
@@ -55,7 +52,7 @@ class ProductController extends Controller
     {
         try {
             Product::find(request()->id)->delete();
-            return response()->json(['code'=>200]);
+            return response()->json(200);
         } catch (\Throwable $th) {
             return $this->msgServerError($th);
         }
@@ -64,13 +61,12 @@ class ProductController extends Controller
     public function msgServerError($th)
     {
         return response()->json([
-            'code' => 406,
             'msg' => 'Server error',
             'error' => $th
-        ]);
+        ],406);
     }
     public function returnMsg($response = null)
     {
-        return response()->json(['msg'=>$response]);
+        return response()->json(['msg'=>$response],200);
     }
 }
