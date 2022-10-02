@@ -23,11 +23,9 @@ class User extends Authenticatable
         'email',
         'phone',
         'phone_secondary',
-        'password',
         'color',
         'state_suscription',
-        'business_type_id',
-        'api_token',
+        'business_type_id'
     ];
 
     /**
