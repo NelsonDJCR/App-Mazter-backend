@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -15,4 +16,15 @@ Route::controller(ProductController::class)->group(function () {
         Route::get('show', 'showProduct');
         Route::get('delete', 'deleteProduct');
     });
+});
+
+
+Route::group(["middleware" => "auth:sanctum"], function () {
+    Route::controller(ProductController::class)->group(function () {
+        Route::post('test','test');
+    });
+});
+
+Route::controller(AuthController::class)->group(function () {
+    Route::post('login', 'login');
 });

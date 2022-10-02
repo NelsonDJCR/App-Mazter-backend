@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('stores', function (Blueprint $table) {
+        Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('comercial_name');
             $table->string('propetiary_name');
@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('color')->nullable();
             $table->integer('state_suscription')->default(0)->comment('0 = Inactive | 1 = Active | 2 = Free');
             $table->foreignId('business_type_id')->constrained('business_types');
+            $table->string('api_token')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
@@ -36,6 +37,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('stores');
+        Schema::dropIfExists('users');
     }
 };
