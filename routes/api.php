@@ -19,9 +19,11 @@ Route::controller(ProductController::class)->group(function () {
 });
 
 
-Route::group(["middleware" => "auth:sanctum"], function () {
-    Route::controller(ProductController::class)->group(function () {
-        Route::post('test','test');
+Route::prefix('v1')->group(function () {
+    Route::group(["middleware" => "auth:sanctum"], function () {
+        Route::controller(ProductController::class)->group(function () {
+            Route::post('test', 'test');
+        });
     });
 });
 
