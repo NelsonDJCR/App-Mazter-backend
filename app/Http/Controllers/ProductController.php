@@ -19,7 +19,7 @@ class ProductController extends Controller
             'name' => 'required|max:255',
             'bar_code' => '|nullable|integer',
             'price' => 'required|integer|max:999999',
-            'discount' => 'required|max:99|integer',
+            'discount' => 'nullable|max:99|integer',
             'stock' => 'nullable|max:1000|integer',
         ];
         $validator = Validator::make(request()->all(), $rules);
@@ -27,8 +27,9 @@ class ProductController extends Controller
             return response()->json($validator->errors()->first(),406);
         }
         try {
-            Product::create(request()->all());
-            $this->returnMsg('Register saved');
+            $data = request()->all();
+            Product::create($data);
+            return $this->returnMsg('Register saved');
         } catch (\Throwable $th) {
             return $this->msgServerError($th);
         }
@@ -68,5 +69,9 @@ class ProductController extends Controller
     public function returnMsg($response = null)
     {
         return response()->json(['msg'=>$response],200);
+    }
+    public function test($response = null)
+    {
+        return response()->json(['msg'=>"Siuuuuuuuu"],200);
     }
 }
