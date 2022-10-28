@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('color')->nullable();
             $table->integer('state_suscription')->default(0)->comment('0 = Inactive | 1 = Active | 2 = Free');
             $table->foreignId('business_type_id')->constrained('business_types');
+            $table->boolean('backup')->default(0);
             $table->timestamps();
             $table->softDeletes();
         });

@@ -17,7 +17,7 @@ class ProductController extends Controller
     {
         $rules = [
             'name' => 'required|max:255',
-            'bar_code' => '|nullable|integer',
+            'bar_code' => 'nullable|numeric',
             'price' => 'required|integer|max:999999',
             'discount' => 'nullable|max:99|integer',
             'stock' => 'nullable|max:1000|integer',
@@ -27,8 +27,7 @@ class ProductController extends Controller
             return response()->json($validator->errors()->first(),406);
         }
         try {
-            $data = request()->all();
-            Product::create($data);
+            Product::create(request()->all());
             return $this->returnMsg('Register saved');
         } catch (\Throwable $th) {
             return $this->msgServerError($th);
@@ -37,8 +36,9 @@ class ProductController extends Controller
 
     public function showProduct()
     {
+        return Product::where('bar_code','like',request()->code.'%')->first();
         try {
-            $data = Product::find(request()->id);
+            $data = Product::where('bar_code',request()->code)->first();
             if (!empty($data)) {
                 return response()->json($data,200);
             }else{

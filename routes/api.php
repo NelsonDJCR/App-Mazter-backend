@@ -15,7 +15,7 @@ Route::prefix('v1')->group(function () {
         Route::prefix('products')->group(function () {
             Route::get('get', 'getProducts');
             Route::post('save', 'saveProduct');
-            Route::get('show', 'showProduct');
+            Route::post('show', 'showProduct');
             Route::get('delete', 'deleteProduct');
         });
     });

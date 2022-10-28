@@ -25,6 +25,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained('users');
             $table->integer('state')->default(1)->comment('1 = active | 0 = disable');
             $table->string('route_image')->nullable();
+            $table->boolean('backup')->default(0);
             $table->timestamps();
             $table->softDeletes();
         });
