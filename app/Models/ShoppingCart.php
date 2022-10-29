@@ -9,9 +9,11 @@ class ShoppingCart extends Model
 {
     use HasFactory;
 
+    protected $primaryKey = 'shopping_cart_id';
+
     public function getListProducts()
     {
-        return $this->hasMany(ShoppingCartItem::class)->getProduct();
+        return $this->hasMany(ShoppingCartItem::class,'shopping_cart_id','shopping_cart_id')->getProduct();
     }
 
 }

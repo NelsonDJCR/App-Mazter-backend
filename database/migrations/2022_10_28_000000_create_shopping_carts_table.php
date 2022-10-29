@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('shopping_carts', function (Blueprint $table) {
-            $table->id();
+            $table->id('shopping_cart_id');
             $table->foreignId('user_id')->constrained('users');
             $table->integer('state')->default(1);
             $table->integer('cart')->default(1);

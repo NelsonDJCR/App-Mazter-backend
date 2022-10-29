@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('business_types', function (Blueprint $table) {
-            $table->id();
+            $table->id('business_type_id');
             $table->string('name');
             $table->boolean('backup')->default(0);
             $table->timestamps();
