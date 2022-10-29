@@ -17,7 +17,7 @@ class ProductController extends Controller
     {
         $rules = [
             'name' => 'required|max:255',
-            'bar_code' => 'nullable|numeric',
+            'barcode' => 'nullable|numeric',
             'price' => 'required|integer|max:999999',
             'discount' => 'nullable|max:99|integer',
             'stock' => 'nullable|max:1000|integer',
@@ -36,9 +36,9 @@ class ProductController extends Controller
 
     public function showProduct()
     {
-        return Product::where('bar_code','like',request()->code.'%')->first();
+        return Product::where('barcode','like',request()->code.'%')->first();
         try {
-            $data = Product::where('bar_code',request()->code)->first();
+            $data = Product::where('barcode',request()->code)->first();
             if (!empty($data)) {
                 return response()->json($data,200);
             }else{
