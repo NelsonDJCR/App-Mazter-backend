@@ -13,6 +13,6 @@ class ShoppingCartItem extends Model
 
     public function scopeGetProduct($query)
     {
-        return $query->leftjoin("products", "products.id", "shopping_cart_items.product_id");
+        return $query->leftjoin("products", "products.product_id", "shopping_cart_items.product_id");
     }
 }

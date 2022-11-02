@@ -27,10 +27,10 @@ class DatabaseSeeder extends Seeder
             'email' => 'st1',
             'phone' => '312312312',
             'password' => bcrypt('123'),
-            'business_type_id' => 1,
+            'business_type_id' => "1",
         ]);
 
-        Product::create(['name' => 'Soup','price' => '1231','user_id' => 1]);
+        Product::create(['name' => 'Smirnoff','price' => '1231','user_id' => 1,'barcode'=>'5410316951777']);
         Product::create(['name' => 'Chess','price' => '5221','user_id' => 1]);
         Product::create(['name' => 'Bread','price' => '15000','user_id' => 1]);
 
@@ -40,7 +40,7 @@ class DatabaseSeeder extends Seeder
             'email' => 'st2',
             'phone' => '312312312',
             'password' => bcrypt('123'),
-            'business_type_id' => 1,
+            'business_type_id' => "1",
         ]);
 
         Product::create(['name' => 'USB','price' => '1323','user_id' => 2]);

@@ -14,7 +14,6 @@ class ShoppingCartController extends Controller
     {
         // Find product
         $product = Product::where('barcode', 'LIKE', request()->barcode . '%')->first();
-        $user = User::find(request()->user_id);
 
         $valideEmpty = ShoppingCart::where('user_id', request()->user_id)->where('state', 1)->with('getListProducts')->first();
         if (empty($valideEmpty)) {
@@ -25,14 +24,14 @@ class ShoppingCartController extends Controller
             $shoppingCart->save();
             // Register first item
             $data = new shoppingCartItem();
-            $data->product_id = $product->id;
+            $data->product_id = $product->product_id;
             $data->amount = 1;
-            $data->shopping_cart_id = $shoppingCart->id;
+            $data->shopping_cart_id = $shoppingCart->shopping_cart_id;
             $data->save();
             return $this->getListCart(request()->user_id, request()->cart);
         } else {
             $shoppingCart = ShoppingCart::where('user_id', request()->user_id)->where('cart', request()->cart)->first();
-            $productInCart = shoppingCartItem::where('product_id', $product->id)->where('shopping_cart_id', $shoppingCart->id)->first();
+            $productInCart = shoppingCartItem::where('product_id', $product->product_id)->where('shopping_cart_id', $shoppingCart->shopping_cart_id)->first();
             if (empty($productInCart)) {
                 // Register a new product
                 $data = new shoppingCartItem();
