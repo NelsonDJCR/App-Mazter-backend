@@ -5,8 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Models\ShoppingCart;
 use App\Models\ShoppingCartItem;
-use App\Models\User;
-use Illuminate\Http\Request;
 
 class ShoppingCartController extends Controller
 {
