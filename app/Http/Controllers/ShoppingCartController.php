@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 
 class ShoppingCartController extends Controller
 {
-    public function registerProductShoppingCart(Request $r)
+    public function registerProductShoppingCart()
     {
         // Find product
         $product = Product::where('barcode', 'LIKE', request()->barcode . '%')->first();
@@ -18,11 +18,13 @@ class ShoppingCartController extends Controller
         $valideEmpty = ShoppingCart::where('user_id', request()->user_id)->where('state', 1)->with('getListProducts')->first();
         if (empty($valideEmpty)) {
             // register  new cart
+            // return "register  new cart";
             $shoppingCart = new ShoppingCart();
             $shoppingCart->user_id = request()->user_id;
             $shoppingCart->cart = request()->cart;
             $shoppingCart->save();
             // Register first item
+            // return "Register first item";
             $data = new shoppingCartItem();
             $data->product_id = $product->product_id;
             $data->amount = 1;
@@ -34,14 +36,16 @@ class ShoppingCartController extends Controller
             $productInCart = shoppingCartItem::where('product_id', $product->product_id)->where('shopping_cart_id', $shoppingCart->shopping_cart_id)->first();
             if (empty($productInCart)) {
                 // Register a new product
+                // return "Register a new product";
                 $data = new shoppingCartItem();
-                $data->product_id = $product->id;
+                $data->product_id = $product->product_id;
                 $data->amount = 1;
-                $data->shopping_cart_id = $shoppingCart->id;
+                $data->shopping_cart_id = $shoppingCart->shopping_cart_id;
                 $data->save();
                 return $this->getListCart(request()->user_id, request()->cart);
             } else {
                 // Change amount
+                // return "Change amount";
                 $productInCart->amount = $productInCart->amount + 1;
                 $productInCart->save();
                 return $this->getListCart(request()->user_id, request()->cart);
@@ -70,7 +74,17 @@ class ShoppingCartController extends Controller
 
     public function changeAmountProductShoppingCart()
     {
-        return request()->all();
-        shoppingCartItem::where('product_id',request()->product_id)->leftjoin("shopping_carts", "shopping_carts.id", ".");
+        $product = shoppingCartItem::where('product_id',request()->product_id)->first();
+
+        $amount = request()->operator == '+' ? $product->amount + 1 : $product->amount - 1;
+        if ($amount == 0) {
+            $product->delete();
+            return $this->getListCart(request()->user_id,request()->cart);
+        }
+        
+        $product->amount = $amount;
+
+        $product->save();
+        return $this->getListCart(request()->user_id,request()->cart);
     }
 }
