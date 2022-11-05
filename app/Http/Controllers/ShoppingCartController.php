@@ -11,7 +11,11 @@ class ShoppingCartController extends Controller
     public function registerProductShoppingCart()
     {
         // Find product
-        $product = Product::where('barcode', 'LIKE', request()->barcode . '%')->first();
+        if (request()->typeFilter == 'product_id') {
+            $product = Product::find(request()->filter);
+        }else {
+            $product = Product::where('barcode', 'LIKE', request()->filter . '%')->first();
+        }
 
         $valideEmpty = ShoppingCart::where('user_id', request()->user_id)->where('state', 1)->with('getListProducts')->first();
         if (empty($valideEmpty)) {

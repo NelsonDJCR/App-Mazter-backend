@@ -10,7 +10,11 @@ class ProductController extends Controller
 {
     public function getProducts()
     {
-        return Product::getProducts();
+        return $this->productsUser(request()->user_id);
+    }
+    public function productsUser($user_id)
+    {
+        return Product::where('user_id',$user_id)->get();
     }
 
     public function saveProduct()
@@ -52,10 +56,10 @@ class ProductController extends Controller
     public function deleteProduct()
     {
         try {
-            Product::find(request()->id)->delete();
-            return response()->json(200);
+            Product::find(request()->product_id)->delete();
+            return $this->productsUser(request()->user_id);
         } catch (\Throwable $th) {
-            return $this->msgServerError($th);
+            return $th;
         }
     }
 
@@ -73,5 +77,10 @@ class ProductController extends Controller
     public function test($response = null)
     {
         return response()->json(['msg'=>"Siuuuuuuuu"],200);
+    }
+
+    public function getProductsSelect()
+    {
+        return Product::select('product_id as value','name as label')->where('user_id',request()->user_id)->get();
     }
 }
