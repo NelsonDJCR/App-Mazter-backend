@@ -23,14 +23,10 @@ return new class extends Migration
             $table->string('password');
             $table->string('color')->nullable();
             $table->integer('state_suscription')->default(0)->comment('0 = Inactive | 1 = Active | 2 = Free');
-            // $table->index('business_type_id');
-            // $table->foreign('business_type_id')->references('business_type_id')->on('business_types')->onDelete('cascade');
-            // $table->foreignId('business_type_id')->constrained();
-
-            // $table->unsignedBigInteger('shopping_cart_id');
             $table->unsignedBigInteger('business_type_id');
             $table->foreign('business_type_id')->references('business_type_id')->on('business_types');
             $table->boolean('backup')->default(0);
+            $table->string('auth_token')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
