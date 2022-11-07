@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -10,10 +11,11 @@ class ProductController extends Controller
 {
     public function getProducts()
     {
-        return $this->productsUser(request()->user_id);
+        return $this->productsUser(request()->bearerToken());
     }
-    public function productsUser($user_id)
+    public function productsUser($token)
     {
+        $user_id = User::where('auth_token',$token)->first()->id;
         return Product::where('user_id',$user_id)->get();
     }
 
@@ -31,7 +33,10 @@ class ProductController extends Controller
             return response()->json($validator->errors()->first(),406);
         }
         try {
-            Product::create(request()->all());
+            $user_id = User::where('auth_token',request()->bearerToken())->first()->id;
+            $data = request()->all();
+            $data['user_id'] = $user_id;
+            Product::create($data);
             return $this->returnMsg('Register saved');
         } catch (\Throwable $th) {
             return $this->msgServerError($th);
@@ -81,6 +86,7 @@ class ProductController extends Controller
 
     public function getProductsSelect()
     {
-        return Product::select('product_id as value','name as label')->where('user_id',request()->user_id)->get();
+        $user_id = User::where('auth_token', request()->bearerToken())->first()->id;
+        return Product::select('product_id as value','name as label')->where('user_id',$user_id)->get();
     }
 }

@@ -29,11 +29,11 @@ Route::prefix('v1')->group(function () {
 
         Route::controller(ProductController::class)->group(function () {
             Route::prefix('products')->group(function () {
-                Route::post('get', 'getProducts');
+                Route::get('get', 'getProducts');
                 Route::post('save', 'saveProduct');
                 Route::post('show', 'showProduct');
                 Route::post('delete', 'deleteProduct');
-                Route::post('getProductsSelect', 'getProductsSelect');
+                Route::get('getProductsSelect', 'getProductsSelect');
             });
         });
 
