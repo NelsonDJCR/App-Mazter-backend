@@ -33,7 +33,6 @@ Route::get('/seed', function () {
         Product::create(['name' => 'USB','price' => '1323','user_id' => 2]);
         Product::create(['name' => 'Airpods','price' => '123','user_id' => 2]);
         Product::create(['name' => 'Phone','price' => '1231231','user_id' => 2]);
-
 });
 Route::get('/keygenerate', function ()
 {
