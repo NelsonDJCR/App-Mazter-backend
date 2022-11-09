@@ -9,6 +9,7 @@ Route::get('/', function () {
     
 });
 Route::get('/seed', function () {
+    $pass = bcrypt('123');
     BusinessType::create(['name' => 'Supermercado']);
         BusinessType::create(['name' => 'Tecnología']);
         User::create([
@@ -16,7 +17,7 @@ Route::get('/seed', function () {
             'propetiary_name' => 'Propetiary 1',
             'email' => 'st1',
             'phone' => '312312312',
-            'password' => bcrypt('123'),
+            'password' => $pass,
             'business_type_id' => "1",
         ]);
         Product::create(['name' => 'Smirnoff','price' => '1231','user_id' => 1,'barcode'=>'5410316951777']);
@@ -27,7 +28,7 @@ Route::get('/seed', function () {
             'propetiary_name' => 'Propetiary 2',
             'email' => 'st2',
             'phone' => '312312312',
-            'password' => bcrypt('123'),
+            'password' => $pass,
             'business_type_id' => "1",
         ]);
         Product::create(['name' => 'USB','price' => '1323','user_id' => 2]);

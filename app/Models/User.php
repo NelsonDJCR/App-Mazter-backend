@@ -17,6 +17,7 @@ class User extends Authenticatable
         'propetiary_name',
         'email',
         'phone',
+        'password',
         'phone_secondary',
         'color',
         'state_suscription',
