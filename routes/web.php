@@ -4,7 +4,7 @@ use App\Models\BusinessType;
 use App\Models\Product;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
-
+use Illuminate\Support\Facades\Artisan;
 Route::get('/', function () {
     
 });
@@ -33,4 +33,10 @@ Route::get('/seed', function () {
         Product::create(['name' => 'USB','price' => '1323','user_id' => 2]);
         Product::create(['name' => 'Airpods','price' => '123','user_id' => 2]);
         Product::create(['name' => 'Phone','price' => '1231231','user_id' => 2]);
+
+});
+Route::get('/keygenerate', function ()
+{
+    Artisan::call('key:generate');
+    return "Cleared!";
 });
