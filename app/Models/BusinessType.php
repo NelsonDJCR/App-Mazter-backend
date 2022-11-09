@@ -9,4 +9,7 @@ class BusinessType extends Model
 {
     use HasFactory;
     protected $primaryKey = 'business_type_id';
+    protected $fillable = [
+        'name',
+    ];
 }
