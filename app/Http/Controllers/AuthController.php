@@ -59,4 +59,11 @@ class AuthController extends Controller
             return response()->json($th, 406);
         }
     }
+
+    public function accessDenny()
+    {
+        return response()->json([
+            'error'=>'unauthenticated.'
+        ],406);
+    }
 }

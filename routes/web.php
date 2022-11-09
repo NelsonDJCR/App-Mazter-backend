@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Models\BusinessType;
 use App\Models\Product;
 use App\Models\User;
@@ -39,4 +40,7 @@ Route::get('/keygenerate', function ()
 {
     Artisan::call('key:generate');
     return "Cleared!";
+});
+Route::controller(AuthController::class)->group(function (){
+    Route::get(null,'accessDenny')->name('login');
 });
