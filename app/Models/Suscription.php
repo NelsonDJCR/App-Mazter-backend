@@ -4,23 +4,15 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Suscription extends Model
 {
-    use HasFactory;
+    use HasFactory,SoftDeletes;
     protected $primaryKey = 'suscription_id';
     protected $fillable = [
-        'campaing',
-        'month_price',
-        'trimester_price',
-        'semester_price',
-        'yearly_price',
-        'month_discount',
-        'trimester_discount',
-        'semester_discount',
-        'yearly_discount',
+        'months_duration',
+        'suscription_price',
         'business_type_id',
-        'sales',
-        'state_suscriptions',
     ];
 }

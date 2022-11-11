@@ -18,7 +18,7 @@ class Product extends Model
         'barcode',
         'purshase_price',
         'size',
-        'sales',
+        'product_sales',
         'store_id',
         'product_state',
         'route_image',

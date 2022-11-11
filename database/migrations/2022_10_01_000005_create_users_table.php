@@ -12,9 +12,9 @@ return new class extends Migration
             $table->id('id');
             $table->string('name');
             $table->string('email')->unique();
-            $table->string('password');
-            $table->unsignedBigInteger('role_id');
-            $table->unsignedBigInteger('store_id');
+            $table->string('password')->nullable();
+            $table->unsignedBigInteger('role_id')->nullable();
+            $table->unsignedBigInteger('store_id')->nullable();
             $table->foreign('role_id')->references('role_id')->on('roles');
             $table->foreign('store_id')->references('store_id')->on('stores');
             $table->integer('users_state')->default(1)->comment('1 = active | 0 = disable');

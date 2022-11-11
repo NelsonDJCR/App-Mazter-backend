@@ -16,9 +16,9 @@ return new class extends Migration
             $table->bigInteger('barcode')->nullabe();
             $table->integer('purshase_price');
             $table->string('size')->nullable();
-            $table->integer('sales')->default(0);
             $table->unsignedBigInteger('store_id');
             $table->foreign('store_id')->references('store_id')->on('stores');
+            $table->integer('product_sales')->default(0);
             $table->integer('product_state')->default(1)->comment('1 = active | 0 = disable');
             $table->string('route_image')->nullable();
             $table->timestamps();

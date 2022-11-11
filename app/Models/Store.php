@@ -16,7 +16,6 @@ class Store extends Model
         'address',
         'store_phone',
         'store_phone_secondary',
-        'store_state_id',
         'picture_business',
         'city',
         'business_type_id',

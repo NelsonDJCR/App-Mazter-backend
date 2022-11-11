@@ -11,6 +11,8 @@ class UserSuscription extends Model
     use HasFactory,SoftDeletes;
     protected $primaryKey = 'user_suscription_id';
     protected $fillable = [
-        'payment_method_name',
+        'store_id',
+        'suscription_id',
+        'payment_method_id',
     ];
 }
