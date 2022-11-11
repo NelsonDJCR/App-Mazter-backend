@@ -13,8 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('business_types', function (Blueprint $table) {
-            $table->id('business_type_id');
+        Schema::create('store_states', function (Blueprint $table) {
+            $table->id('store_state_id');
             $table->string('name');
             $table->timestamps();
             $table->softDeletes();
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('business_types');
+        Schema::dropIfExists('store_states');
     }
 };

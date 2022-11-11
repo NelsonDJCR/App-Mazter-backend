@@ -16,16 +16,16 @@ return new class extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->id('product_id');
             $table->string('name');
-            $table->bigInteger('barcode')->nullable();
-            $table->integer('price');
-            $table->integer('discount')->default(0);
-            $table->integer('sales')->default(0);
+            $table->integer('price')->nullable();
             $table->integer('stock')->default(0);
-            $table->integer('amount_products')->default(0);
-            $table->foreignId('user_id')->constrained('users');
-            $table->integer('state')->default(1)->comment('1 = active | 0 = disable');
+            $table->bigInteger('barcode')->nullabe();
+            $table->integer('purshase_price');
+            $table->string('size')->nullable();
+            $table->integer('sales')->default(0);
+            $table->unsignedBigInteger('store_id');
+            $table->foreign('store_id')->references('store_id')->on('stores');
+            $table->integer('product_state')->default(1)->comment('1 = active | 0 = disable');
             $table->string('route_image')->nullable();
-            $table->boolean('backup')->default(0);
             $table->timestamps();
             $table->softDeletes();
         });

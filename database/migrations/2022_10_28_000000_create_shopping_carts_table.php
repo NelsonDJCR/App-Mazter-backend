@@ -15,10 +15,9 @@ return new class extends Migration
     {
         Schema::create('shopping_carts', function (Blueprint $table) {
             $table->id('shopping_cart_id');
-            // $table->index('user_id');
-            // $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreignId('user_id')->constrained();
-            $table->integer('state')->default(1);
+            $table->unsignedBigInteger('store_id');
+            $table->foreign('store_id')->references('store_id')->on('stores');
+            $table->integer('shopping_cart_state')->default(1)->comment('1 = active | 0 = disable');
             $table->integer('cart')->default(1);
             $table->timestamps();
         });
