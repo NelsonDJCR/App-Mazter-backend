@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('city');
             $table->unsignedBigInteger('business_type_id');
             $table->foreign('business_type_id')->references('business_type_id')->on('business_types');
+            $table->integer('store_state')->default(1)->comment('1 = active | 0 = disable');
             // Settings
             $table->string('logo')->nullable();
             $table->string('color_primary')->default('#FF0080');

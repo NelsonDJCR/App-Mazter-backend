@@ -7,20 +7,14 @@ use App\Models\PaymentMethod;
 use \App\Models\Product;
 use App\Models\Role;
 use App\Models\Store;
-use App\Models\StoreState;
+use App\Models\StoreSuscription;
 use App\Models\Suscription;
 use App\Models\User;
-use App\Models\UserSuscription;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
-    /**
-     * Seed the application's database.
-     *
-     * @return void
-     */
+
     public function run()
     {
         BusinessType::create(['business_type_name' => 'Supermarker']);
@@ -92,7 +86,7 @@ class DatabaseSeeder extends Seeder
         PaymentMethod::create(['payment_method_name'=>'Card']);
         PaymentMethod::create(['payment_method_name'=>'Wire transfer']);
 
-        UserSuscription::create([
+        StoreSuscription::create([
             'store_id'=>1,
             'suscription_id'=>2,
             'payment_method_id'=>2,

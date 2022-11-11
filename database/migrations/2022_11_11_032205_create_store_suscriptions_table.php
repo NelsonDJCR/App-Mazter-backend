@@ -8,8 +8,8 @@ return new class extends Migration
 {
     public function up()
     {
-        Schema::create('user_suscriptions', function (Blueprint $table) {
-            $table->id('user_suscription_id');
+        Schema::create('store_suscriptions', function (Blueprint $table) {
+            $table->id('store_suscription_id');
             $table->unsignedBigInteger('store_id');
             $table->unsignedBigInteger('suscription_id');
             $table->unsignedBigInteger('payment_method_id');
@@ -24,6 +24,6 @@ return new class extends Migration
 
     public function down()
     {
-        Schema::dropIfExists('user_suscriptions');
+        Schema::dropIfExists('store_suscriptions');
     }
 };
