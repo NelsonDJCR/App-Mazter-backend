@@ -20,7 +20,7 @@ return new class extends Migration
             $table->integer('semester_discount')->nullable();
             $table->integer('yearly_discount')->nullable();
             $table->unsignedBigInteger('business_type_id');
-            $table->foreign('business_type_id')->references('business_type_id')->on('business_type');
+            $table->foreign('business_type_id')->references('business_type_id')->on('business_types');
             $table->integer('sales')->default(0);
             $table->integer('state_suscriptions')->default(1)->comment('1 = active | 0 = disable');
             $table->timestamps();

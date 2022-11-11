@@ -10,7 +10,7 @@ return new class extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id('product_id');
-            $table->string('name');
+            $table->string('product_name');
             $table->integer('price')->nullable();
             $table->integer('stock')->default(0);
             $table->bigInteger('barcode')->nullabe();

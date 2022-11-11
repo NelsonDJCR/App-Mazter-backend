@@ -11,7 +11,7 @@ class StoreState extends Model
     use HasFactory,SoftDeletes;
     protected $primaryKey = 'store_state_id';
     protected $fillable = [
-        'name',
+        'store_state_name',
         'date_end_at',
     ];
 }

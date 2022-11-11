@@ -11,7 +11,7 @@ return new class extends Migration
     {
         Schema::create('store_states', function (Blueprint $table) {
             $table->id('store_state_id');
-            $table->string('name');
+            $table->string('store_state_name');
             $table->dateTime('date_end_at');
             $table->timestamps();
             $table->softDeletes();

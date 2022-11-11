@@ -11,7 +11,7 @@ return new class extends Migration
     {
         Schema::create('business_types', function (Blueprint $table) {
             $table->id('business_type_id');
-            $table->string('name');
+            $table->string('business_type_name');
             $table->timestamps();
             $table->softDeletes();
         });

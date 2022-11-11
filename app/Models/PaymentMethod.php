@@ -4,13 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Role extends Model
+class PaymentMethod extends Model
 {
-    use HasFactory,SoftDeletes;
-    protected $primaryKey = 'role_id';
+    use HasFactory;
+    protected $primaryKey = 'payment_method_id';
     protected $fillable = [
-        'role_name',
+        'payment_method_name',
     ];
 }
