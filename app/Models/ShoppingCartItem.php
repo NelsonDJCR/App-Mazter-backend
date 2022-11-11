@@ -10,6 +10,12 @@ class ShoppingCartItem extends Model
     use HasFactory;
 
     protected $primaryKey = 'shopping_cart_item_id';
+    protected $fillable = [
+        'amount',
+        'price',
+        'product_id',
+        'shopping_cart_id',
+    ];
 
     public function scopeGetProduct($query)
     {

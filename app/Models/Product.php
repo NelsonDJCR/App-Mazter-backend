@@ -13,11 +13,15 @@ class Product extends Model
 
     protected $fillable = [
         'name',
-        'barcode',
         'price',
-        'discount',
         'stock',
-        'user_id',
+        'barcode',
+        'purshase_price',
+        'size',
+        'sales',
+        'store_id',
+        'product_state',
+        'route_image',
     ];
 
     static function getProducts()
