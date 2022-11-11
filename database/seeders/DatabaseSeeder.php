@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use \App\Models\BusinessType;
 use \App\Models\Product;
 use App\Models\Store;
+use App\Models\StoreState;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -18,9 +19,17 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        BusinessType::create(['name' => 'Supermercado']);
-        BusinessType::create(['name' => 'Tecnología']);
-
+        BusinessType::create(['name' => 'Supermarker']);
+        BusinessType::create(['name' => 'Cloting Store']);
+        
+        StoreState::create([
+            'name' => 'inactive',
+            'name' => '',
+            'name' => '',
+            'name' => '',
+            'name' => '',
+            'name' => '',
+        ]);
         User::create([
             'comercial_name' => 'Store 1',
             'propetiary_name' => 'Propetiary 1',
