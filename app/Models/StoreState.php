@@ -12,5 +12,6 @@ class StoreState extends Model
     protected $primaryKey = 'store_state_id';
     protected $fillable = [
         'name',
+        'date_end_at',
     ];
 }
