@@ -22,7 +22,7 @@ class ProductController extends Controller
     public function saveProduct()
     {
         $rules = [
-            'name' => 'required|max:255',
+            'product_name' => 'required|max:255',
             'barcode' => 'nullable|numeric',
             'price' => 'required|integer|max:999999',
             'discount' => 'nullable|max:99|integer',
@@ -70,10 +70,7 @@ class ProductController extends Controller
 
     public function msgServerError($th)
     {
-        return response()->json([
-            'msg' => 'Server error',
-            'error' => $th
-        ],406);
+        return response()->json([$th],406);
     }
     public function returnMsg($response = null)
     {
@@ -86,7 +83,7 @@ class ProductController extends Controller
 
     public function getProductsSelect()
     {
-        $user_id = User::where('auth_token', request()->bearerToken())->first()->id;
-        return Product::select('product_id as value','name as label')->where('user_id',$user_id)->get();
+        $store_id = User::where('auth_token', request()->bearerToken())->first()->id;
+        return Product::select('product_id as value','product_name as label')->where('store_id',$store_id)->get();
     }
 }

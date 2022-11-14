@@ -13,7 +13,7 @@ class ShoppingCartController extends Controller
     {
 
         // Get Id User
-        $user_id = User::where('auth_token',request()->bearerToken())->first()->id;
+        $store_id = User::where('auth_token',request()->bearerToken())->first()->id;
 
         // Find product
         if (request()->typeFilter == 'product_id') {
@@ -22,12 +22,12 @@ class ShoppingCartController extends Controller
             $product = Product::where('barcode', 'LIKE', request()->filter . '%')->first();
         }
 
-        $valideEmpty = ShoppingCart::where('user_id', $user_id)->where('state', 1)->with('getListProducts')->first();
+        $valideEmpty = ShoppingCart::where('store_id', $store_id)->where('shopping_cart_state', 1)->with('getListProducts')->first();
         if (empty($valideEmpty)) {
             // register  new cart
             // return "register  new cart";
             $shoppingCart = new ShoppingCart();
-            $shoppingCart->user_id = $user_id;
+            $shoppingCart->store_id = $store_id;
             $shoppingCart->cart = request()->cart;
             $shoppingCart->save();
             // Register first item
@@ -37,9 +37,9 @@ class ShoppingCartController extends Controller
             $data->amount = 1;
             $data->shopping_cart_id = $shoppingCart->shopping_cart_id;
             $data->save();
-            return $this->getListCart($user_id, request()->cart);
+            return $this->getListCart($store_id, request()->cart);
         } else {
-            $shoppingCart = ShoppingCart::where('user_id', $user_id)->where('cart', request()->cart)->first();
+            $shoppingCart = ShoppingCart::where('store_id', $store_id)->where('cart', request()->cart)->first();
             $productInCart = shoppingCartItem::where('product_id', $product->product_id)->where('shopping_cart_id', $shoppingCart->shopping_cart_id)->first();
             if (empty($productInCart)) {
                 // Register a new product
@@ -49,25 +49,25 @@ class ShoppingCartController extends Controller
                 $data->amount = 1;
                 $data->shopping_cart_id = $shoppingCart->shopping_cart_id;
                 $data->save();
-                return $this->getListCart($user_id, request()->cart);
+                return $this->getListCart($store_id, request()->cart);
             } else {
                 // Change amount
                 // return "Change amount";
                 $productInCart->amount = $productInCart->amount + 1;
                 $productInCart->save();
-                return $this->getListCart($user_id, request()->cart);
+                return $this->getListCart($store_id, request()->cart);
             }
         }
     }
 
     public function getProductShoppingCart()
     {
-        $user_id = User::where('auth_token',request()->bearerToken())->first()->id;
-        return $this->getListCart($user_id,request()->cart);
+        $store_id = User::where('auth_token',request()->bearerToken())->first()->id;
+        return $this->getListCart($store_id,request()->cart);
     }
-    public function getListCart($user_id, $cart)
+    public function getListCart($store_id, $cart)
     {
-        $cart = ShoppingCart::with('getListProducts')->where('user_id', $user_id)->where('cart', $cart)->get();
+        $cart = ShoppingCart::with('getListProducts')->where('store_id', $store_id)->where('cart', $cart)->get();
         $total = 0;
         foreach ($cart as $value) {
             foreach ($value->getListProducts as $getListProduct) {
