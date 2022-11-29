@@ -22,7 +22,7 @@ class AuthController extends Controller
     {
         $user = User::whereEmail($r->email)->first();
 
-        if (!is_null($user) && Hash::check($r->password, $user->password) && $user->role_id == 3) {
+        if (!is_null($user) && Hash::check($r->password, $user->password)) {
             $store = Store::whereStoreId($user->store_id)->get(['store_id','store_state'])->first();
             $suscription_id = StoreSuscription::where('store_id', $store->store_id)->first()->suscription_id;
             $months_duration = Suscription::where('suscription_id', $suscription_id)->first()->months_duration;
@@ -33,6 +33,8 @@ class AuthController extends Controller
                 $user->save();
                 return response()->json([
                     'token' => $token,
+                    'name' => $user->name,
+                    'role_id' => $user->role_id,
                 ], 200);
             } else {
                 return response()->json([

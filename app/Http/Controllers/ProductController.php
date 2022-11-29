@@ -15,8 +15,13 @@ class ProductController extends Controller
     }
     public function productsUser($token)
     {
-        $user_id = User::where('auth_token',$token)->first()->id;
-        return Product::where('user_id',$user_id)->get();
+        $store_id = User::where('auth_token',$token)->first()->store_id;
+        return Product::where('store_id',$store_id)->get();
+    }
+
+    public function getProduct()
+    {
+        return Product::where('product_id',request()->product_id)->first();
     }
 
     public function saveProduct()
@@ -25,6 +30,7 @@ class ProductController extends Controller
             'product_name' => 'required|max:255',
             'barcode' => 'nullable|numeric',
             'price' => 'required|integer|max:999999',
+            'purshase_price' => 'required|integer|max:999999',
             'discount' => 'nullable|max:99|integer',
             'stock' => 'nullable|max:1000|integer',
         ];
@@ -33,9 +39,8 @@ class ProductController extends Controller
             return response()->json($validator->errors()->first(),406);
         }
         try {
-            $user_id = User::where('auth_token',request()->bearerToken())->first()->id;
             $data = request()->all();
-            $data['user_id'] = $user_id;
+            $data['store_id'] = User::where('auth_token',request()->bearerToken())->first()->store_id;;
             Product::create($data);
             return $this->returnMsg('Register saved');
         } catch (\Throwable $th) {
@@ -62,7 +67,7 @@ class ProductController extends Controller
     {
         try {
             Product::find(request()->product_id)->delete();
-            return $this->productsUser(request()->user_id);
+            return $this->productsUser(request()->bearerToken());
         } catch (\Throwable $th) {
             return $th;
         }
@@ -83,7 +88,7 @@ class ProductController extends Controller
 
     public function getProductsSelect()
     {
-        $store_id = User::where('auth_token', request()->bearerToken())->first()->id;
+        $store_id = User::where('auth_token', request()->bearerToken())->first()->store_id;
         return Product::select('product_id as value','product_name as label')->where('store_id',$store_id)->get();
     }
 }

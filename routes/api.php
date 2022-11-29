@@ -7,9 +7,15 @@ use App\Http\Controllers\UserController;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use PHPUnit\Framework\Test;
 
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //     return $request->user();
+// Te$table->softDeletes();te
+// s
+// tesxsdsfsdfsdsddfsd
+// test
+// test
 // });
 
 
@@ -29,6 +35,7 @@ Route::prefix('v1')->group(function () {
         Route::controller(ProductController::class)->group(function () {
             Route::prefix('products')->group(function () {
                 Route::get('get', 'getProducts');
+                Route::post('getProduct', 'getProduct');
                 Route::post('save', 'saveProduct');
                 Route::post('show', 'showProduct');
                 Route::post('delete', 'deleteProduct');
