@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\inventory\DashboardController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ShoppingCartController;
 use App\Http\Controllers\UserController;
@@ -9,21 +10,15 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use PHPUnit\Framework\Test;
 
-// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-//     return $request->user();
-// Te$table->softDeletes();te
-// s
-// tesxsdsfsdfsdsddfsd
-// test
-// test
-// });
-
-
 Route::prefix('v1')->group(function () {
 
+    Route::controller(DashboardController::class)->group(function () {
+        Route::get('dashboard_homeDetails', 'dashboard_homeDetails');
+    });
+    
     Route::controller(AuthController::class)->group(function () {
         Route::post('login', 'login');
-        Route::post('logout', 'logout');
+        Route::get('logout', 'logout');
     });
 
     Route::group(["middleware" => "auth:sanctum"], function () {

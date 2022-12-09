@@ -51,13 +51,15 @@ class AuthController extends Controller
     {
         try {
 
+            $user = User::where('auth_token', $request->bearerToken())->first();
+            $user->auth_token = '';
+            $user->save();
+            return response()->json(200);
             $accessToken = $request->bearerToken();
             $token = PersonalAccessToken::findToken($accessToken);
             $token->delete();
 
-            $user = User::where('auth_token', $request->bearerToken())->first();
-            $user->auth_token = '';
-            $user->save();
+            
 
             return response()->json(200);
         } catch (\Throwable $th) {
