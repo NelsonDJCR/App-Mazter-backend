@@ -13,12 +13,12 @@ class ShoppingCartController extends Controller
     {
 
         // Get Id User
-        $store_id = User::where('auth_token',request()->bearerToken())->first()->id;
+        $store_id = User::where('auth_token', request()->bearerToken())->first()->store_id;
 
         // Find product
         if (request()->typeFilter == 'product_id') {
             $product = Product::find(request()->filter);
-        }else {
+        } else {
             $product = Product::where('barcode', 'LIKE', request()->filter . '%')->first();
         }
 
@@ -62,8 +62,8 @@ class ShoppingCartController extends Controller
 
     public function getProductShoppingCart()
     {
-        $store_id = User::where('auth_token',request()->bearerToken())->first()->id;
-        return $this->getListCart($store_id,request()->cart);
+        $store_id = User::where('auth_token', request()->bearerToken())->first()->store_id;
+        return $this->getListCart($store_id, request()->cart);
     }
     public function getListCart($store_id, $cart)
     {
@@ -82,18 +82,23 @@ class ShoppingCartController extends Controller
 
     public function changeAmountProductShoppingCart()
     {
-        $user_id = User::where('auth_token',request()->bearerToken())->first()->id;
-        $product = shoppingCartItem::where('product_id',request()->product_id)->first();
 
-        $amount = request()->operator == '+' ? $product->amount + 1 : $product->amount - 1;
-        if ($amount == 0) {
-            $product->delete();
-            return $this->getListCart($user_id,request()->cart);
+        $product_stock = Product::where('product_id', request()->product_id)->first()->stock;
+        $store_id = User::where('auth_token', request()->bearerToken())->first()->store_id;
+        $shoppingCartItem = shoppingCartItem::where('product_id', request()->product_id)->first();
+
+        $amount = request()->operator == '+' ? $shoppingCartItem->amount + 1 : $shoppingCartItem->amount - 1;
+
+        if ($product_stock < $amount) {
+            return $this->getListCart($store_id, request()->cart);
+        } else if ($amount == 0) {
+            // If the quantity is 0 it is removed from the shoppingCartItem
+            $shoppingCartItem->delete();
+            return $this->getListCart($store_id, request()->cart);
         }
-        
-        $product->amount = $amount;
+        $shoppingCartItem->amount = $amount;
 
-        $product->save();
-        return $this->getListCart($user_id,request()->cart);
+        $shoppingCartItem->save();
+        return $this->getListCart($store_id, request()->cart);
     }
 }
