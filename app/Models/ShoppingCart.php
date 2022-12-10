@@ -12,6 +12,7 @@ class ShoppingCart extends Model
     protected $primaryKey = 'shopping_cart_id';
     protected $fillable = [
         'store_id',
+        'user_id',
         'shopping_cart_state',
         'cart',
     ];

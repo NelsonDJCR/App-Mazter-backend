@@ -5,7 +5,13 @@ namespace App\Models\inventory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class LogSales extends Model
+class Sale extends Model
 {
     use HasFactory;
+    protected $fillable = [
+        'store_id',
+        'user_id',
+        'json_products',
+        'total'
+    ];
 }

@@ -42,6 +42,8 @@ Route::prefix('v1')->group(function () {
             Route::post('registerProductShoppingCart', 'registerProductShoppingCart');
             Route::post('getProductShoppingCart', 'getProductShoppingCart');
             Route::post('changeAmountProductShoppingCart', 'changeAmountProductShoppingCart');
+            Route::post('checkoutShoppingCart', 'checkoutShoppingCart');
+            Route::post('getItemsCart', 'getItemsCart');
         });
     });
 });
