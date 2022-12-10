@@ -78,16 +78,30 @@ class ShoppingCartController extends Controller
         if ($shopping_cart_id) {
             $carts->where('shopping_cart_id', $shopping_cart_id);
         }
+
         $carts = $carts->where('user_id', $user_id)->get();
+
         $total = 0;
         foreach ($carts as $value) {
             foreach ($value->getListProducts as $getListProduct) {
                 $total = $total + ($getListProduct->price * $getListProduct->amount);
             }
         }
+        // return $total;
+
+
+        $firts_cart = ShoppingCart::with('getListProducts')->where('store_id', $store_id)->where('user_id', $user_id)->first();
+        // foreach ($firts_cart as $item) {
+        $total_firts_cart = 0;
+        foreach ($firts_cart->getListProducts as $getListProduct) {
+            $total_firts_cart = $total_firts_cart + ($getListProduct->price * $getListProduct->amount);
+        }
+        // }
+        // return $total_firts_cart;
         return response()->json([
             'carts' => $carts,
-            'total' => $total
+            'total' => $total,
+            'total_first_cart' => $total_firts_cart
         ]);
     }
 
@@ -95,7 +109,16 @@ class ShoppingCartController extends Controller
     {
         $user = User::select('store_id', 'id as user_id')->where('auth_token', request()->bearerToken())->first();
         $shopping_cart_id = ShoppingCart::where('store_id', $user->store_id)->where('user_id', $user->user_id)->where('shopping_cart_id', request()->shopping_cart_id)->first()->shopping_cart_id;
-        return shoppingCartItem::getProduct()->where('shopping_cart_id', $shopping_cart_id)->get();
+        $data = shoppingCartItem::getProduct()->where('shopping_cart_id', $shopping_cart_id)->get();
+        $total = 0;
+        foreach ($data as $getListProduct) {
+            $total = $total + ($getListProduct->price * $getListProduct->amount);
+        }
+        // return $total;
+        return response()->json([
+            'data' =>$data,
+            'total' =>$total,
+        ]);
     }
 
     public function changeAmountProductShoppingCart()
@@ -119,7 +142,20 @@ class ShoppingCartController extends Controller
         $shoppingCartItem->amount = $amount;
 
         $shoppingCartItem->save();
-        return $this->getListCart($store_id, request()->shopping_cart_id);
+
+        $data = shoppingCartItem::getProduct()->where('shopping_cart_id', request()->shopping_cart_id)->get();
+        $total = 0;
+        foreach ($data as $getListProduct) {
+            $total = $total + ($getListProduct->price * $getListProduct->amount);
+        }
+
+        return$test = $this->getListCart($store_id, request()->shopping_cart_id);
+        return$test->carts;
+        // return $this->getListCart($store_id, request()->shopping_cart_id);
+        return response()->json([
+            'dataxd' => $this->getListCart($store_id, request()->shopping_cart_id),
+            'total'=>$total
+        ]);
     }
 
     public function checkoutShoppingCart()
