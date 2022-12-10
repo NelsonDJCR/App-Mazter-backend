@@ -164,4 +164,26 @@ class ShoppingCartController extends Controller
             return $th;
         }
     }
+
+    public function addNewCart()
+    {
+        $user = User::select('store_id', 'id as user_id')->where('auth_token', request()->bearerToken())->first();
+
+        $shoppingCart = new ShoppingCart();
+        $shoppingCart->store_id = $user->store_id;
+        $shoppingCart->user_id = $user->user_id;
+        $shoppingCart->cart = 1;
+        $shoppingCart->save();
+
+        $user = User::select('store_id', 'id as user_id')->where('auth_token', request()->bearerToken())->first();
+        $shopping_cart_id = ShoppingCart::where('store_id', $user->store_id)->where('user_id', $user->user_id)->where('shopping_cart_id', $shoppingCart->shopping_cart_id)->first()->shopping_cart_id;
+        $data = shoppingCartItem::getProduct()->where('shopping_cart_id', $shopping_cart_id)->get();
+
+        $carts = ShoppingCart::where('store_id', $user->store_id)->where('user_id', $user->user_id)->get();
+        return response()->json([
+            'shopping_cart_id' => $shoppingCart->shopping_cart_id,
+            'data' => $data,
+            'carts' => $carts,
+        ]);
+    }
 }
