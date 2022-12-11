@@ -163,11 +163,10 @@ class ShoppingCartController extends Controller
         try {
             # Cart_id 
             $cart_id = request()->cart_id;
-            $cart_id = 1;
             DB::beginTransaction();
             # Get products from shopping cart
             $user = User::select('store_id', 'id as user_id')->where('auth_token', request()->bearerToken())->first();
-            $shopping_cart = ShoppingCart::select('shopping_cart_id')->where('store_id', $user->store_id)->where('cart', $cart_id)->where('user_id', $user->user_id)->first();
+            $shopping_cart = ShoppingCart::select('shopping_cart_id')->where('store_id', $user->store_id)->where('shopping_cart_id', $cart_id)->where('user_id', $user->user_id)->first();
             $productsInCart = ShoppingCartItem::where('shopping_cart_id', $shopping_cart->shopping_cart_id)->get();
 
             # Update amount and get aount finish
@@ -195,8 +194,10 @@ class ShoppingCartController extends Controller
             $sale->save();
 
             DB::commit();
+            $store_id = User::where('auth_token', request()->bearerToken())->first()->store_id;
+            return $this->getListCart($store_id, null);
         } catch (\Throwable $th) {
-            DB::rollback();
+            // DB::rollback();
             return $th;
         }
     }
