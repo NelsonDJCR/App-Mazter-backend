@@ -75,10 +75,10 @@ class ShoppingCartController extends Controller
     {
         $user_id = User::where('auth_token', request()->bearerToken())->first()->id;
         $carts = ShoppingCart::with('getListProducts')->where('store_id', $store_id);
+        $all_carts = $carts->where('user_id', $user_id)->get();
         if ($shopping_cart_id) {
             $carts->where('shopping_cart_id', $shopping_cart_id);
         }
-
         $carts = $carts->where('user_id', $user_id)->get();
 
         $total = 0;
@@ -89,7 +89,7 @@ class ShoppingCartController extends Controller
         }
         // return $total;
 
-
+        
         $firts_cart = ShoppingCart::with('getListProducts')->where('store_id', $store_id)->where('user_id', $user_id)->first();
         // foreach ($firts_cart as $item) {
         $total_firts_cart = 0;
@@ -102,6 +102,7 @@ class ShoppingCartController extends Controller
         // }
         // return $total_firts_cart;
         return response()->json([
+            'all_carts' => $all_carts,
             'carts' => $carts,
             'total' => $total,
             'total_first_cart' => $total_firts_cart
