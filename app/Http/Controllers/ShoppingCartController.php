@@ -16,7 +16,7 @@ class ShoppingCartController extends Controller
         /*
         #
         #  VALIDE EXIST PRODUCTS
-        # THE VALIDATION AMOUNT FOR BAR CODE MO WORKING
+        #  THE VALIDATION AMOUNT FOR BAR CODE MO WORKING
         */
 
         // Get data user
@@ -71,7 +71,7 @@ class ShoppingCartController extends Controller
         $store_id = User::where('auth_token', request()->bearerToken())->first()->store_id;
         return $this->getListCart($store_id, null);
     }
-    public function getListCart($store_id, $shopping_cart_id)
+    public function getListCart($store_id, $shopping_cart_id = null)
     {
         $user_id = User::where('auth_token', request()->bearerToken())->first()->id;
         $carts = ShoppingCart::with('getListProducts')->where('store_id', $store_id);
@@ -93,8 +93,11 @@ class ShoppingCartController extends Controller
         $firts_cart = ShoppingCart::with('getListProducts')->where('store_id', $store_id)->where('user_id', $user_id)->first();
         // foreach ($firts_cart as $item) {
         $total_firts_cart = 0;
-        foreach ($firts_cart->getListProducts as $getListProduct) {
-            $total_firts_cart = $total_firts_cart + ($getListProduct->price * $getListProduct->amount);
+        try {
+            foreach ($firts_cart->getListProducts as $getListProduct) {
+                $total_firts_cart = $total_firts_cart + ($getListProduct->price * $getListProduct->amount);
+            }
+        } catch (\Throwable $th) {
         }
         // }
         // return $total_firts_cart;
@@ -116,8 +119,8 @@ class ShoppingCartController extends Controller
         }
         // return $total;
         return response()->json([
-            'data' =>$data,
-            'total' =>$total,
+            'data' => $data,
+            'total' => $total,
         ]);
     }
 
@@ -148,13 +151,10 @@ class ShoppingCartController extends Controller
         foreach ($data as $getListProduct) {
             $total = $total + ($getListProduct->price * $getListProduct->amount);
         }
-
-        return$test = $this->getListCart($store_id, request()->shopping_cart_id);
-        return$test->carts;
         // return $this->getListCart($store_id, request()->shopping_cart_id);
         return response()->json([
-            'dataxd' => $this->getListCart($store_id, request()->shopping_cart_id),
-            'total'=>$total
+            'data' => $this->getListCart($store_id, request()->shopping_cart_id),
+            'total' => $total
         ]);
     }
 
@@ -221,5 +221,21 @@ class ShoppingCartController extends Controller
             'data' => $data,
             'carts' => $carts,
         ]);
+    }
+
+    public function deleteCart()
+    {
+        try {
+            $items = shoppingCartItem::where('shopping_cart_id', request()->shopping_cart_id)->get();
+            foreach ($items as $key) {
+                $key->delete();
+            }
+        } catch (\Throwable $th) {
+        }
+        ShoppingCart::find(request()->shopping_cart_id)->delete();
+        $store_id = User::where('auth_token', request()->bearerToken())->first()->store_id;
+        return $this->getListCart($store_id, null);
+        // return response()->json([
+        // ]);
     }
 }
