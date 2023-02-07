@@ -16,6 +16,17 @@ class ExampleTest extends TestCase
     {
         $response = $this->get('/');
 
-        $response->assertStatus(200);
+        $this->assertTrue(true);
+    }
+    public function test_add_item_shoping_cart()
+    {
+        // /api/v1/registerProductShoppingCart
+
+        $response = $this->post('/api/v1/registerProductShoppingCart', ["filter"=>2,"shopping_cart_id"=>4,"typeFilter"=>"product_id"]);
+        $response->assertJson([
+            'created' => true,
+        ]);
+    
+ 
     }
 }

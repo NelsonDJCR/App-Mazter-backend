@@ -7,7 +7,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
 Route::get('/', function () {
-    
+    return true;
 });
 Route::get('/seed', function () {
     $pass = bcrypt('123');
