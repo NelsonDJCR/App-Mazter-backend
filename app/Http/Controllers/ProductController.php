@@ -48,6 +48,23 @@ class ProductController extends Controller
         }
     }
 
+    public function updateProduct()
+    {
+        try {
+
+            $p = Product::find(request()->product_id);
+            $p->product_name = request()->name;
+            $p->price = request()->price;
+            $p->stock = request()->stock;
+            $p->barcode = request()->barcode;
+            $p->save();
+            return $p;
+        } catch (\Throwable $th) {
+            return $th;
+        }
+        
+    }
+
     public function showProduct()
     {
         return Product::where('barcode','like',request()->code.'%')->first();

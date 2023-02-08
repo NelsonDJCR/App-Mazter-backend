@@ -32,6 +32,7 @@ Route::prefix('v1')->group(function () {
                 Route::get('get', 'getProducts');
                 Route::post('getProduct', 'getProduct');
                 Route::post('save', 'saveProduct');
+                Route::post('updateProduct', 'updateProduct');
                 Route::post('show', 'showProduct');
                 Route::post('delete', 'deleteProduct');
                 Route::get('getProductsSelect', 'getProductsSelect');
