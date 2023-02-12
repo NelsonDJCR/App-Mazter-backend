@@ -168,7 +168,11 @@ class ShoppingCartController extends Controller
             foreach ($productsInCart as $productInCart) {
                 $total = $total + ($productInCart->price * $productInCart->amount);
                 $product = Product::find($productInCart->product_id);
-                $product->stock = $productInCart->amount - $product->stock;
+                $product->stock = $product->stock - $productInCart->amount;
+                $product->product_sales = $product->product_sales + $productInCart->amount;
+
+                // DB::rollBack();
+                // return $product->stock - $productInCart->amount ;
                 $product->save();
                 # Delete all products from ShoppingCartItem
                 $productInCart->delete();
@@ -191,7 +195,7 @@ class ShoppingCartController extends Controller
             $store_id = User::where('auth_token', request()->bearerToken())->first()->store_id;
             return $this->getListCart($store_id, null);
         } catch (\Throwable $th) {
-            return $th;
+            return response()->json($th->getMessage(),400);
         }
     }
 
