@@ -184,6 +184,8 @@ class ShoppingCartController extends Controller
             $json_products = json_encode($productsInCart);
 
             # Save register in sales_table
+
+
             $sale = new Sale();
             $sale->user_id = $user->user_id;
             $sale->store_id = $user->store_id;

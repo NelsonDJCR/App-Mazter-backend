@@ -11,11 +11,9 @@ class DashboardController extends Controller
 {
     public function dashboard_homeDetails()
     {
-        // $store_id = User::where('auth_token',request()->bearerToken())->first()->store_id;
-        $store_id = 1;
 
-        $totalProductsRegister = Product::where('store_id',$store_id)->count();
-        $totalSales = Product::selectRaw("SUM(product_sales) AS total")->where('store_id',$store_id)->get();
+        $totalProductsRegister = Product::where('store_id',getStoreId())->count();
+        $totalSales = Product::selectRaw("SUM(product_sales) AS total")->where('store_id',getStoreId())->get();
 
         $totalSales = $totalSales[0]->total;
 
