@@ -17,8 +17,7 @@ return new class extends Migration
             $table->id('log_id');
             $table->unsignedBigInteger('store_id');
             $table->foreign('store_id')->references('store_id')->on('stores');
-            $table->unsignedBigInteger('product_id');
-            $table->foreign('product_id')->references('product_id')->on('products');
+            $table->text('products_ids');
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
             $table->text('json_products');

@@ -20,6 +20,7 @@ class DashboardController extends Controller
         return response()->json([
             'totalProductsRegister' =>$totalProductsRegister,
             'totalSales' =>$totalSales,
+            'user' =>getUser(),
         ]);
 
     }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\LogSales;
 use App\Models\inventory\Sale;
 use App\Models\Product;
 use App\Models\ShoppingCart;
@@ -165,15 +166,16 @@ class ShoppingCartController extends Controller
 
             # Update amount and get aount finish
             $total = 0;
+            $products = array();
             foreach ($productsInCart as $productInCart) {
                 $total = $total + ($productInCart->price * $productInCart->amount);
                 $product = Product::find($productInCart->product_id);
                 $product->stock = $product->stock - $productInCart->amount;
                 $product->product_sales = $product->product_sales + $productInCart->amount;
-
                 // DB::rollBack();
                 // return $product->stock - $productInCart->amount ;
                 $product->save();
+                $products[] = $product->product_id;
                 # Delete all products from ShoppingCartItem
                 $productInCart->delete();
             }
@@ -186,8 +188,9 @@ class ShoppingCartController extends Controller
             # Save register in sales_table
 
 
-            $sale = new Sale();
+            $sale = new LogSales();
             $sale->user_id = $user->user_id;
+            $sale->products_ids = json_encode($products);
             $sale->store_id = $user->store_id;
             $sale->total = $total;
             $sale->json_products = $json_products;
