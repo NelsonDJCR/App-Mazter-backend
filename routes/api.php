@@ -21,7 +21,7 @@ Route::prefix('v1')->group(function () {
         Route::get('logout', 'logout');
     });
 
-    Route::group(["middleware" => "auth:sanctum"], function () {
+    // Route::group(["middleware" => "auth:sanctum"], function () {
 
         Route::controller(UserController::class)->group(function (){
             Route::get('getUser','getUser')->name('getUser');
@@ -48,5 +48,5 @@ Route::prefix('v1')->group(function () {
             Route::get('addNewCart', 'addNewCart');
             Route::post('deleteCart', 'deleteCart');
         });
-    });
+    // });
 });

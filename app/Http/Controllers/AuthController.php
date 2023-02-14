@@ -33,8 +33,7 @@ class AuthController extends Controller
                 $user->save();
                 return response()->json([
                     'token' => $token,
-                    'name' => $user->name,
-                    'role_id' => $user->role_id,
+                    'user' => $user,
                 ], 200);
             } else {
                 return response()->json([
@@ -50,8 +49,7 @@ class AuthController extends Controller
     public function logout(Request $request)
     {
         try {
-
-            $user = User::where('auth_token', $request->bearerToken())->first();
+            $user = getUser();
             $user->auth_token = '';
             $user->save();
             return response()->json(200);
@@ -59,11 +57,9 @@ class AuthController extends Controller
             $token = PersonalAccessToken::findToken($accessToken);
             $token->delete();
 
-            
-
             return response()->json(200);
         } catch (\Throwable $th) {
-            return response()->json($th, 406);
+            return $th->getMessage();
         }
     }
 

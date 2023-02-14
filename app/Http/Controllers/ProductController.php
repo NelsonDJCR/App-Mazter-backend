@@ -13,9 +13,9 @@ class ProductController extends Controller
     {
         return $this->productsUser(request()->bearerToken());
     }
-    public function productsUser($token)
+    public function productsUser()
     {
-        $store_id = User::where('auth_token',$token)->first()->store_id;
+        $store_id = getStoreId();
         return Product::where('store_id',$store_id)->get();
     }
 
@@ -40,7 +40,7 @@ class ProductController extends Controller
         }
         try {
             $data = request()->all();
-            $data['store_id'] = User::where('auth_token',request()->bearerToken())->first()->store_id;;
+            $data['store_id'] = User::where('id',getUserId())->first()->store_id;;
             Product::create($data);
             return $this->returnMsg('Register saved');
         } catch (\Throwable $th) {
@@ -105,7 +105,7 @@ class ProductController extends Controller
 
     public function getProductsSelect()
     {
-        $store_id = User::where('auth_token', request()->bearerToken())->first()->store_id;
+        $store_id = getStoreId();
         return Product::select('product_id as value','product_name as label')->where('store_id',$store_id)->get();
     }
 }

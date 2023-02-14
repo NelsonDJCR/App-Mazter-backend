@@ -20,7 +20,7 @@ class ShoppingCartController extends Controller
         */
 
         // Get data user
-        $user = User::select('store_id', 'id as user_id')->where('auth_token', request()->bearerToken())->first();
+        $user = User::select('store_id', 'id as user_id')->where('store_id', getStoreId())->first();
 
         // Find product
         if (request()->typeFilter == 'product_id') {
@@ -68,12 +68,12 @@ class ShoppingCartController extends Controller
 
     public function getProductShoppingCart()
     {
-        $store_id = User::where('auth_token', request()->bearerToken())->first()->store_id;
+        $store_id = getStoreId();
         return $this->getListCart($store_id, null);
     }
     public function getListCart($store_id, $shopping_cart_id = null)
     {
-        $user_id = User::where('auth_token', request()->bearerToken())->first()->id;
+        $user_id = getUserId();
         $carts = ShoppingCart::with('getListProducts')->where('store_id', $store_id);
         $all_carts = $carts->where('user_id', $user_id)->get();
         if ($shopping_cart_id) {
@@ -111,7 +111,7 @@ class ShoppingCartController extends Controller
 
     public function getItemsCart()
     {
-        $user = User::select('store_id', 'id as user_id')->where('auth_token', request()->bearerToken())->first();
+        $user = User::select('store_id', 'id as user_id')->where('store_id', getStoreId())->first();
         $shopping_cart_id = ShoppingCart::where('store_id', $user->store_id)->where('user_id', $user->user_id)->where('shopping_cart_id', request()->shopping_cart_id)->first()->shopping_cart_id;
         $data = shoppingCartItem::getProduct()->where('shopping_cart_id', $shopping_cart_id)->get();
         $total = 0;
@@ -129,7 +129,7 @@ class ShoppingCartController extends Controller
     {
 
         $product_stock = Product::where('product_id', request()->product_id)->first()->stock;
-        $store_id = User::where('auth_token', request()->bearerToken())->first()->store_id;
+        $store_id = getStoreId();
         // $shopping_cart_id = ShoppingCart::find(request()->shopping_cart_id)->first()->shopping_cart_id;
         $shoppingCartItem = shoppingCartItem::where('product_id', request()->product_id)->where('shopping_cart_id', request()->shopping_cart_id)->first();
 
@@ -159,7 +159,7 @@ class ShoppingCartController extends Controller
             $cart_id = request()->cart_id;
             DB::beginTransaction();
             # Get products from shopping cart
-            $user = User::select('store_id', 'id as user_id')->where('auth_token', request()->bearerToken())->first();
+            $user = User::select('store_id', 'id as user_id')->where('store_id', getUserId())->first();
             $shopping_cart = ShoppingCart::select('shopping_cart_id')->where('store_id', $user->store_id)->where('shopping_cart_id', $cart_id)->where('user_id', $user->user_id)->first();
             $productsInCart = ShoppingCartItem::where('shopping_cart_id', $shopping_cart->shopping_cart_id)->get();
 
@@ -192,8 +192,7 @@ class ShoppingCartController extends Controller
             $sale->save();
 
             DB::commit();
-            $store_id = User::where('auth_token', request()->bearerToken())->first()->store_id;
-            return $this->getListCart($store_id, null);
+            return $this->getListCart(getStoreId(), null);
         } catch (\Throwable $th) {
             return response()->json($th->getMessage(),400);
         }
@@ -201,7 +200,7 @@ class ShoppingCartController extends Controller
 
     public function addNewCart()
     {
-        $user = User::select('store_id', 'id as user_id')->where('auth_token', request()->bearerToken())->first();
+        $user = User::select('store_id', 'id as user_id')->where('store_id', getStoreId())->first();
 
         $shoppingCart = new ShoppingCart();
         $shoppingCart->store_id = $user->store_id;
@@ -209,7 +208,7 @@ class ShoppingCartController extends Controller
         $shoppingCart->cart = 1;
         $shoppingCart->save();
 
-        $user = User::select('store_id', 'id as user_id')->where('auth_token', request()->bearerToken())->first();
+        $user = User::select('store_id', 'id as user_id')->where('store_id', getStoreId())->first();
         $shopping_cart_id = ShoppingCart::where('store_id', $user->store_id)->where('user_id', $user->user_id)->where('shopping_cart_id', $shoppingCart->shopping_cart_id)->first()->shopping_cart_id;
         $data = shoppingCartItem::getProduct()->where('shopping_cart_id', $shopping_cart_id)->get();
 
@@ -231,8 +230,7 @@ class ShoppingCartController extends Controller
         } catch (\Throwable $th) {
         }
         ShoppingCart::find(request()->shopping_cart_id)->delete();
-        $store_id = User::where('auth_token', request()->bearerToken())->first()->store_id;
-        return $this->getListCart($store_id, null);
+        return $this->getListCart(getStoreId(), null);
 
     }
 }
